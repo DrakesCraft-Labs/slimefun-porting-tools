@@ -1,5 +1,42 @@
+# Solo se versionan las herramientas. Todo lo demas son clones de terceros:
+#
+#   limpio/       las copias en las que se trabaja, cada una con su propio repo publicado
+#   <Addon>/      los clones originales de la cosecha, tal cual vinieron de upstream
+#
+# Ninguno de los dos tiene sitio aqui: el codigo de cada addon vive en su repositorio de
+# DrakesCraft-Labs, y los originales se vuelven a clonar cuando hagan falta.
 limpio/
 _upstream-intake/
 __pycache__/
 *.pyc
 inventario.json
+
+# Clones de la cosecha (upstream sin tocar)
+AllSlimeCustomAddons/
+Automation/
+BreweryMenu/
+Bump/
+Cringle-Bosses/
+DemonicExpansion/
+Drugfun/
+EquivalencyTech/
+GlobalWarming/
+GlobiaMachines/
+HardcoreSlimefun/
+IDreamOfEasy/
+InfernalExpansion/
+InfinityLib-Drake/
+MagicXpansion/
+Nexcavate/
+NotEnoughAddons/
+Obsidian-Armor/
+ObsidianExpansion/
+PrivateStorage/
+RandomExpansion/
+SFPortalGun/
+SlimeCustomizer/
+SlimefunAdvancements/
+SlimefunNukes/
+SlimefunOreChunks/
+SlimefunWarfare/
+SlimyBees/
