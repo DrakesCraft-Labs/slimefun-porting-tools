@@ -1,0 +1,5 @@
+limpio/
+_upstream-intake/
+__pycache__/
+*.pyc
+inventario.json
