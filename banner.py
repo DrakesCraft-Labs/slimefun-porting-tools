@@ -150,6 +150,24 @@ ADDONS = {
     <ellipse cx="24" cy="-14" rx="15" ry="9" fill="{acento2}" opacity="0.55" transform="rotate(25 24 -14)">
       <animate attributeName="opacity" values="0.55;0.2;0.55" dur="0.5s" repeatCount="indefinite"/></ellipse>""",
     },
+    "Netheopoiesis": {
+        "acento": "#84CC16",
+        "acento2": "#F43F5E",
+        "sub": "SLIMEFUN4 ADDON · TERRAFORMAR EL NETHER",
+        # Un brote saliendo de piedra agrietada: el Nether volviendose verde.
+        "figura": """
+    <path d="M -38 26 L -20 12 L -4 24 L 12 10 L 30 22 L 38 26 L 38 38 L -38 38 Z"
+          fill="#0F172A" stroke="url(#acG)" stroke-width="3"/>
+    <path d="M 0 26 L 0 -10" stroke="{acento}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 0 -2 C -20 -6 -24 -22 -22 -30 C -10 -28 -2 -16 0 -2 Z" fill="{acento}" opacity="0.85">
+      <animate attributeName="opacity" values="0.85;0.45;0.85" dur="3.4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 0 -8 C 20 -12 24 -28 22 -36 C 10 -34 2 -22 0 -8 Z" fill="{acento}" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.9;0.6" dur="3.4s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="-26" cy="16" r="3" fill="{acento2}" opacity="0.8"/>
+    <circle cx="24" cy="14" r="2.5" fill="{acento2}" opacity="0.6"/>""",
+    },
     "Obsidian-Armor": {
         "acento": "#8B5CF6",
         "acento2": "#38BDF8",
