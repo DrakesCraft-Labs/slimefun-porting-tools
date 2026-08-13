@@ -85,6 +85,71 @@ ADDONS = {
     <rect x="4" y="-34" width="30" height="30" rx="5" fill="{acento}" opacity="0.3" stroke="{acento}" stroke-width="3"/>
     <rect x="-15" y="4" width="30" height="30" rx="5" fill="#0F172A" stroke="{acento2}" stroke-width="3"/>""",
     },
+    "BreweryMenu": {
+        "acento": "#F59E0B", "acento2": "#84CC16",
+        "sub": "SLIMEFUN4 ADDON · MENU DE DESTILERIA",
+        "figura": """
+    <path d="M -16 -38 L -16 -10 L -34 26 A 6 6 0 0 0 -28 36 L 28 36 A 6 6 0 0 0 34 26 L 16 -10 L 16 -38 Z"
+          fill="#0F172A" stroke="url(#acG)" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M -26 14 L 26 14 L 30 26 A 4 4 0 0 1 26 32 L -26 32 A 4 4 0 0 1 -30 26 Z" fill="{acento}" opacity="0.5"/>
+    <circle cx="-8" cy="24" r="3" fill="{acento2}"><animate attributeName="cy" values="24;16;24" dur="2.6s" repeatCount="indefinite"/></circle>""",
+    },
+    "Cringle-Bosses": {
+        "acento": "#EF4444", "acento2": "#FBBF24",
+        "sub": "SLIMEFUN4 ADDON · JEFES POR RITUAL",
+        "figura": """
+    <path d="M 0 -40 L 34 -14 L 26 34 L -26 34 L -34 -14 Z" fill="#0F172A" stroke="url(#acG)" stroke-width="3.5" stroke-linejoin="round"/>
+    <circle cx="-11" cy="-2" r="5" fill="{acento2}"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+    <circle cx="11" cy="-2" r="5" fill="{acento2}"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+    <path d="M -13 16 L -6 22 L 0 16 L 6 22 L 13 16" fill="none" stroke="{acento}" stroke-width="3"/>""",
+    },
+    "Drugfun": {
+        "acento": "#22C55E", "acento2": "#A3E635",
+        "sub": "SLIMEFUN4 ADDON · ALQUIMIA Y BREBAJES",
+        "figura": """
+    <path d="M -12 -36 L 12 -36 L 12 -12 L 30 24 A 8 8 0 0 1 22 36 L -22 36 A 8 8 0 0 1 -30 24 L -12 -12 Z"
+          fill="#0F172A" stroke="url(#acG)" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M -22 12 L 22 12 L 28 26 A 4 4 0 0 1 24 32 L -24 32 A 4 4 0 0 1 -28 26 Z" fill="{acento}" opacity="0.55"/>
+    <circle cx="6" cy="22" r="3.5" fill="{acento2}"><animate attributeName="cy" values="22;14;22" dur="2.2s" repeatCount="indefinite"/></circle>""",
+    },
+    "GlobiaMachines": {
+        "acento": "#0EA5E9", "acento2": "#A78BFA",
+        "sub": "SLIMEFUN4 ADDON · MAQUINARIA INDUSTRIAL",
+        "figura": """
+    <rect x="-36" y="-24" width="72" height="52" rx="6" fill="#0F172A" stroke="url(#acG)" stroke-width="3.5"/>
+    <g><path d="M 0 -34 L 6 -28 L 0 -22 L -6 -28 Z" fill="{acento2}"/>
+      <animateTransform attributeName="transform" type="rotate" values="0;360" dur="8s" repeatCount="indefinite"/></g>
+    <rect x="-22" y="-8" width="44" height="8" rx="3" fill="{acento}" opacity="0.7"/>
+    <rect x="-22" y="8" width="28" height="8" rx="3" fill="{acento}" opacity="0.45"/>""",
+    },
+    "Nexcavate": {
+        "acento": "#F97316", "acento2": "#FDE047",
+        "sub": "SLIMEFUN4 ADDON · EXCAVACION Y MINERIA",
+        "figura": """
+    <path d="M -38 12 A 44 44 0 0 1 38 12" fill="none" stroke="url(#acG)" stroke-width="5" stroke-linecap="round"/>
+    <rect x="-3" y="4" width="6" height="34" rx="3" fill="{acento}"/>
+    <circle cx="0" cy="12" r="5" fill="{acento2}"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>""",
+    },
+    "PrivateStorage": {
+        "acento": "#14B8A6", "acento2": "#FBBF24",
+        "sub": "SLIMEFUN4 ADDON · COFRES PRIVADOS",
+        "figura": """
+    <rect x="-34" y="-10" width="68" height="42" rx="5" fill="#0F172A" stroke="url(#acG)" stroke-width="3.5"/>
+    <path d="M -18 -10 L -18 -24 A 18 18 0 0 1 18 -24 L 18 -10" fill="none" stroke="{acento2}" stroke-width="4"/>
+    <circle cx="0" cy="8" r="6" fill="{acento}"><animate attributeName="opacity" values="1;0.4;1" dur="2.4s" repeatCount="indefinite"/></circle>
+    <rect x="-2.5" y="8" width="5" height="14" rx="2" fill="{acento}"/>""",
+    },
+    "SlimyBees": {
+        "acento": "#FACC15", "acento2": "#F97316",
+        "sub": "SLIMEFUN4 ADDON · ABEJAS Y GENETICA",
+        "figura": """
+    <ellipse cx="0" cy="6" rx="20" ry="26" fill="#0F172A" stroke="url(#acG)" stroke-width="3.5"/>
+    <path d="M -19 -4 L 19 -4 M -20 8 L 20 8 M -17 20 L 17 20" stroke="{acento}" stroke-width="4"/>
+    <ellipse cx="-24" cy="-14" rx="15" ry="9" fill="{acento2}" opacity="0.55" transform="rotate(-25 -24 -14)">
+      <animate attributeName="opacity" values="0.55;0.2;0.55" dur="0.5s" repeatCount="indefinite"/></ellipse>
+    <ellipse cx="24" cy="-14" rx="15" ry="9" fill="{acento2}" opacity="0.55" transform="rotate(25 24 -14)">
+      <animate attributeName="opacity" values="0.55;0.2;0.55" dur="0.5s" repeatCount="indefinite"/></ellipse>""",
+    },
     "Obsidian-Armor": {
         "acento": "#8B5CF6",
         "acento2": "#38BDF8",
