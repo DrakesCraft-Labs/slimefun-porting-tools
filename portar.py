@@ -207,6 +207,15 @@ def portar_pom(repo, escribir):
         </dependency>
 """, 1)
 
+    # El maven-compiler-plugin viejo (3.7 es de 2018) no procesa bien las anotaciones con Java 21:
+    # Lombok deja de generar los getters y salen decenas de "cannot find symbol" que parecen
+    # errores del addon y no lo son.  # compiler-plugin-modernizado
+    texto = re.sub(r"(<artifactId>maven-compiler-plugin</artifactId>\s*<version>)[^<]*(</version>)",
+                   r"\g<1>3.13.0\g<2>", texto)
+    # Y su <source>/<target> propios pisan las properties de arriba, asi que se sustituyen por
+    # <release>, que es lo que manda desde Java 9.
+    texto = re.sub(r"<source>\d+</source>\s*<target>\d+</target>", "<release>21</release>", texto)
+
     # El maven-shade-plugin anterior a 3.5 no sabe leer bytecode de Java 21 (major 65) y falla
     # con IllegalArgumentException al empaquetar. Los addons viejos traen 3.2.x o 3.3.x.
     texto = re.sub(r"(<artifactId>maven-shade-plugin</artifactId>\s*<version>)[^<]*(</version>)",
@@ -221,6 +230,17 @@ def portar_pom(repo, escribir):
 
     if "drakescraft-labs.github.io/maven-repo" not in texto:
         texto = texto.replace("<repositories>", "<repositories>\n" + MAVEN_DRAKE, 1)
+
+    # paper-api tambien arrastra `net.md-5:bungeecord-chat`, que vive en el repo de PaperMC. Si el
+    # pom no lo declaraba (porque compilaba contra spigot-api), hay que ponerlo: sin el, el build
+    # muere en resolucion aunque el codigo este perfecto.  # repo-papermc-anadido
+    if "repo.papermc.io" not in texto and "<repositories>" in texto:
+        texto = texto.replace("<repositories>", """<repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+""", 1)
 
     # paper-api arrastra `com.mojang:brigadier`, que solo se publica en el repositorio de
     # Mojang. Sin declararlo, el build muere en resolucion de dependencias sin llegar a compilar
