@@ -145,7 +145,9 @@ def main():
     escribir = "--escribir" in sys.argv
 
     total, ficheros = 0, 0
-    for f in repo.rglob("*.java"):
+    # Tambien los .kt: hay addons escritos en Kotlin y los nombres de la API de Bukkit son los
+    # mismos, asi que les afectan exactamente los mismos renombres.
+    for f in sorted(repo.rglob("*.java")) + sorted(repo.rglob("*.kt")):
         if "/target/" in str(f) or "/build/" in str(f):
             continue
         texto = f.read_text(encoding="utf-8", errors="replace")

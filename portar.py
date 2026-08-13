@@ -49,6 +49,59 @@ REMAPEOS = [
     ("dev.drake.dough", "com.github.drakescraft_labs.slimefun4.libraries.dough"),
 ]
 
+# Segunda pasada, para addons de antes de 2021.
+#
+# Aquellos usaban clases que no solo se movieron de paquete: unas cambiaron de nombre (Category ->
+# ItemGroup) y otras se quedaron como compatibilidad en otra ruta. El primer remapeo las manda a
+# `legacy.*`, donde NO estan, asi que hay que redirigirlas una a una.
+#
+# Se aplica DESPUES del remapeo general, sobre los nombres ya reescritos.
+API_ANTIGUA = [
+    # cscorelib2.inventory se repartio entre DOS destinos, asi que no vale una regla de paquete:
+    # ChestMenu y ClickAction se quedaron en CSCoreLibPlugin (que no se repaqueto) y solo InvUtils
+    # acabo en dough. Comprobado listando ambos paquetes dentro del jar del core.
+    ("com.github.drakescraft_labs.slimefun4.legacy.cscorelib2.inventory.ChestMenu",
+     "me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu"),
+    ("com.github.drakescraft_labs.slimefun4.legacy.cscorelib2.inventory.ClickAction",
+     "me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction"),
+    # La API de protecciones de dough renombro la clase entera. Se sustituye el nombre a secas
+    # para pillar de una vez el import y las constantes (ProtectableAction.ATTACK_PLAYER y demas):
+    # el identificador no aparece con ningun otro significado.
+    ("ProtectableAction", "Interaction"),
+    # InfinityLib reordeno sus paquetes entre la 1.2 y la 1.3, que es la que usamos.
+    ("io.github.mooy1.infinitylib.AbstractAddon",
+     "io.github.mooy1.infinitylib.core.AbstractAddon"),
+    ("io.github.mooy1.infinitylib.bstats.", "io.github.mooy1.infinitylib.metrics."),
+    (".slimefun4.legacy.Lists.RecipeType", ".slimefun4.api.recipes.RecipeType"),
+    (".slimefun4.legacy.Objects.Category", ".slimefun4.api.items.Category"),
+    (".slimefun4.legacy.Objects.SlimefunItem.SlimefunItem", ".slimefun4.api.items.SlimefunItem"),
+    (".slimefun4.legacy.api.SlimefunItemStack", ".slimefun4.api.items.SlimefunItemStack"),
+    (".slimefun4.legacy.cscorelib2.item.CustomItem", ".slimefun4.api.items.CustomItem"),
+    (".slimefun4.legacy.cscorelib2.config.Config", ".slimefun4.libraries.dough.config.Config"),
+    (".slimefun4.legacy.cscorelib2.", ".slimefun4.libraries.dough."),
+]
+
+# Dependencias de un addon sobre OTRO addon.
+#
+# Varios addons usan objetos de sus vecinos en las recetas, y tiran de la version de upstream. Esa
+# esta compilada contra los paquetes originales de Slimefun, asi que arrastra al classpath tipos
+# como `me.mrCookieSlime.Slimefun.api.SlimefunItemStack` que aqui no existen. El sintoma engana:
+# los errores salen en NUESTRO codigo ("cannot access ...", "incompatible types") aunque el
+# problema este en el jar del vecino.
+#
+# Hay que apuntar a los ports de DrakesCraft, que ademas son los que corren en produccion: si se
+# compila contra el de upstream, los IDs de objeto pueden no coincidir con los del servidor.
+#
+# Clave: (groupId, artifactId) de upstream.  Valor: los tres de nuestro port.
+DEPS_ADDON = {
+    ("com.github.GallowsDove", "FoxyMachines"):
+        ("com.github.drakescraft_labs", "FoxyMachines-drake", "1.21.11-Drake.1"),
+    ("com.github.Mooy1", "InfinityLib"):
+        ("io.github.mooy1", "InfinityLib", "1.3.10-Drake-1.21.11"),
+    ("com.github.SlimefunGuguProject", "InfinityLib"):
+        ("io.github.mooy1", "InfinityLib", "1.3.10-Drake-1.21.11"),
+}
+
 MAVEN_DRAKE = """        <repository>
             <id>drakescraft-labs-maven</id>
             <url>https://drakescraft-labs.github.io/maven-repo/</url>
@@ -68,13 +121,22 @@ def _remapear(linea):
     """Aplica todos los remapeos de paquete a una linea."""
     for viejo, nuevo in REMAPEOS:
         linea = re.sub(r"\b" + re.escape(viejo) + r"\b", nuevo, linea)
+    # Segunda pasada: las clases de la API antigua que se movieron o renombraron.
+    for viejo, nuevo in API_ANTIGUA:
+        linea = linea.replace(viejo, nuevo)
     return linea
 
 
 def portar_fuentes(repo, escribir):
-    """Reescribe el prefijo de Slimefun en todos los .java."""
+    """Reescribe el prefijo de Slimefun en el codigo fuente.
+
+    Se miran tambien los .kt: algun addon esta escrito en Kotlin, y ahi los imports se declaran
+    igual que en Java, asi que el mismo remapeo vale. Lo unico que cambia es que en Kotlin la
+    linea `package` no lleva punto y coma, cosa que la comprobacion de mas abajo ya tolera porque
+    solo mira como empieza.
+    """
     tocados = 0
-    for f in repo.rglob("*.java"):
+    for f in sorted(repo.rglob("*.java")) + sorted(repo.rglob("*.kt")):
         if "/target/" in str(f) or "/build/" in str(f):
             continue
         texto = f.read_text(encoding="utf-8", errors="replace")
@@ -129,6 +191,25 @@ def _sustituir_dependencia_slimefun(texto):
     return "".join(salida), sustituidas
 
 
+def _sustituir_dependencias_de_addon(texto):
+    """Apunta a los ports de DrakesCraft las dependencias sobre otros addons.
+
+    Se reescriben los tres campos a la vez -- groupId, artifactId y version -- porque en varios
+    casos cambian los tres, y dejar uno viejo resuelve un artefacto que no existe.
+    """
+    sustituidas = 0
+    for (grupo, artefacto), (g2, a2, v2) in DEPS_ADDON.items():
+        patron = re.compile(
+            r"<groupId>" + re.escape(grupo) + r"</groupId>(\s*)"
+            r"<artifactId>" + re.escape(artefacto) + r"</artifactId>(\s*)"
+            r"<version>[^<]*</version>")
+        texto, n = patron.subn(
+            f"<groupId>{g2}</groupId>\\1<artifactId>{a2}</artifactId>\\2<version>{v2}</version>",
+            texto)
+        sustituidas += n
+    return texto, sustituidas
+
+
 def _fuentes_del_repo(repo):
     """Todo el codigo del repo en un solo texto, para buscar dependencias implicitas."""
     trozos = []
@@ -169,6 +250,16 @@ def portar_pom(repo, escribir):
                    r"\s*<version>[^<]*</version>",
                    f"<groupId>io.papermc.paper</groupId>\\1<artifactId>paper-api</artifactId>\n"
                    f"            <version>{PAPER}</version>", texto)
+    # Los addons de antes de 2020 dependen del artefacto ancestral org.bukkit:bukkit, anterior
+    # incluso a spigot-api. Es el que mas engana de todos: resuelve sin problema desde el repo de
+    # Spigot, asi que el build parece sano, pero deja en el classpath una API de 1.15 donde media
+    # constante moderna no existe todavia. El sintoma es un "cannot find symbol" sobre algo que si
+    # esta en paper-api (Enchantment.UNBREAKING, por ejemplo) y no lleva a ninguna parte hasta que
+    # se mira que jar hay debajo.
+    texto = re.sub(r"<groupId>org\.bukkit</groupId>(\s*)<artifactId>bukkit</artifactId>"
+                   r"\s*<version>[^<]*</version>",
+                   f"<groupId>io.papermc.paper</groupId>\\1<artifactId>paper-api</artifactId>\n"
+                   f"            <version>{PAPER}</version>", texto)
     # El groupId de paper-api cambio de com.destroystokyo.paper a io.papermc.paper.
     texto = texto.replace("<groupId>com.destroystokyo.paper</groupId>",
                           "<groupId>io.papermc.paper</groupId>")
@@ -189,6 +280,7 @@ def portar_pom(repo, escribir):
     # <exclusions> u otros elementos detras del <scope>, y un patron rigido los dejaba pasar.
     # El resultado era tener DOS dependencias de Slimefun y un fallo de resolucion.
     texto, sustituidas = _sustituir_dependencia_slimefun(texto)
+    texto, _ = _sustituir_dependencias_de_addon(texto)
     if sustituidas == 0 and "slimefun-core" not in texto:
         # Solo si no dependia de Slimefun por pom Y no se la hemos puesto ya. Sin la segunda
         # comprobacion, ejecutar el portador dos veces dejaba la dependencia duplicada y el
@@ -270,6 +362,30 @@ def portar_pom(repo, escribir):
     return "pom actualizado"
 
 
+def portar_plugin_yml(repo, escribir):
+    """Sube el api-version del plugin.yml a 1.21.
+
+    Los addons cosechados declaran 1.14, 1.16 o 1.18. No impide que arranquen -- cualquier valor
+    a partir de 1.13 evita el modo heredado -- pero con uno viejo Paper aplica reglas de
+    compatibilidad que ya no hacen falta y ensucia el arranque con avisos. Poner la version real
+    del servidor deja claro contra que se probo.
+
+    Se cita entre comillas a proposito: sin ellas, YAML lee 1.21 como numero decimal, y un dia que
+    toque poner 1.21.11 el formato cambiaria de tipo sin avisar.
+    """
+    cambiados = []
+    for yml in repo.rglob("plugin.yml"):
+        if "/target/" in str(yml) or "/build/" in str(yml):
+            continue
+        texto = yml.read_text(encoding="utf-8", errors="replace")
+        nuevo = re.sub(r"^api-version:.*$", "api-version: '1.21'", texto, flags=re.MULTILINE)
+        if nuevo != texto:
+            cambiados.append(yml.name)
+            if escribir:
+                yml.write_text(nuevo, encoding="utf-8")
+    return len(cambiados)
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -292,6 +408,7 @@ def main():
     tocados = portar_fuentes(repo, escribir)
     print(f"  fuentes reescritas: {tocados}")
     print(f"  {portar_pom(repo, escribir)}")
+    print(f"  plugin.yml con api-version al dia: {portar_plugin_yml(repo, escribir)}")
     return 0
 
 
