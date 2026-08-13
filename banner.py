@@ -85,6 +85,35 @@ ADDONS = {
     <rect x="4" y="-34" width="30" height="30" rx="5" fill="{acento}" opacity="0.3" stroke="{acento}" stroke-width="3"/>
     <rect x="-15" y="4" width="30" height="30" rx="5" fill="#0F172A" stroke="{acento2}" stroke-width="3"/>""",
     },
+    "Obsidian-Armor": {
+        "acento": "#8B5CF6",
+        "acento2": "#38BDF8",
+        "sub": "SLIMEFUN4 ADDON · ARMADURA DE OBSIDIANA",
+        # Un peto: hombros, torso y el cuello en hueco.
+        "figura": """
+    <path d="M -34 -30 L -12 -38 L 0 -26 L 12 -38 L 34 -30 L 30 30 L -30 30 Z"
+          fill="#0F172A" stroke="url(#acG)" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M -12 -38 L 0 -26 L 12 -38" fill="none" stroke="{acento2}" stroke-width="2.5"/>
+    <path d="M -18 -4 L 18 -4 M -16 12 L 16 12" stroke="{acento}" stroke-width="2.5" opacity="0.75">
+      <animate attributeName="opacity" values="0.75;0.25;0.75" dur="3s" repeatCount="indefinite"/>
+    </path>""",
+    },
+    "MagicXpansion": {
+        "acento": "#D946EF",
+        "acento2": "#FBBF24",
+        "sub": "SLIMEFUN4 ADDON · MAGIA, HECHIZOS Y REACTORES",
+        # Una estrella de seis puntas que gira despacio, con un nucleo que late.
+        "figura": """
+    <g>
+      <path d="M 0 -42 L 10 -12 L 40 -12 L 16 8 L 26 38 L 0 20 L -26 38 L -16 8 L -40 -12 L -10 -12 Z"
+            fill="none" stroke="url(#acG)" stroke-width="3.5" stroke-linejoin="round"/>
+      <animateTransform attributeName="transform" type="rotate"
+                        values="0;360" dur="24s" repeatCount="indefinite"/>
+    </g>
+    <circle cx="0" cy="0" r="9" fill="{acento2}" opacity="0.9">
+      <animate attributeName="r" values="9;13;9" dur="2.4s" repeatCount="indefinite"/>
+    </circle>""",
+    },
     "ObsidianExpansion": {
         "acento": "#7C3AED",
         "acento2": "#22D3EE",
