@@ -150,6 +150,23 @@ ADDONS = {
     <ellipse cx="24" cy="-14" rx="15" ry="9" fill="{acento2}" opacity="0.55" transform="rotate(25 24 -14)">
       <animate attributeName="opacity" values="0.55;0.2;0.55" dur="0.5s" repeatCount="indefinite"/></ellipse>""",
     },
+    "MultiverseCreatures": {
+        "acento": "#A855F7",
+        "acento2": "#F59E0B",
+        "sub": "CRIATURAS, JEFES Y OBJETOS DE OTROS UNIVERSOS",
+        # Un portal romboidal con una silueta dentro: lo que cruza desde otro universo.
+        "figura": """
+    <g>
+      <path d="M 0 -46 L 32 0 L 0 46 L -32 0 Z" fill="none" stroke="url(#acG)" stroke-width="3.5"/>
+      <animateTransform attributeName="transform" type="rotate" values="0;360" dur="30s" repeatCount="indefinite"/>
+    </g>
+    <path d="M 0 -30 L 21 0 L 0 30 L -21 0 Z" fill="{acento}" opacity="0.18"/>
+    <path d="M -9 -14 L -9 6 M 9 -14 L 9 6 M -9 6 L 0 20 L 9 6" fill="none" stroke="{acento2}"
+          stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="0" cy="-20" r="4.5" fill="{acento2}">
+      <animate attributeName="opacity" values="1;0.3;1" dur="2.2s" repeatCount="indefinite"/>
+    </circle>""",
+    },
     "Netheopoiesis": {
         "acento": "#84CC16",
         "acento2": "#F43F5E",
