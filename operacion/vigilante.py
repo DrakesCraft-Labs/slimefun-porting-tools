@@ -26,6 +26,7 @@ HUB = pathlib.Path("/home/jack/ai-hub")
 ESTADO = HUB / ".vigilante-estado.json"
 CONTROL = ["python3", str(HUB / "scripts" / "control_drakescraft.py")]
 MARGEN_REINICIO = 30 * 60          # no reiniciar mas de una vez cada media hora
+MARGEN_ARRANQUE = 8 * 60           # un arranque tarda ~3 min; pasados 8 esta colgado
 ENV = pathlib.Path("/opt/stacks/drakes-updater/.env")
 
 
@@ -81,14 +82,26 @@ def main():
         if fallos:
             print(f"  recuperado tras {fallos} fallo(s)")
             avisar("✅ **DrakesCraft** vuelve a responder.")
-        estado = {"fallos": 0, "ultimo_reinicio": ultimo}
+        estado = {"fallos": 0, "ultimo_reinicio": ultimo, "arrancando_desde": None}
         ESTADO.write_text(json.dumps(estado))
         print("  el servidor responde")
         return 0
 
     if arrancando():
-        print("  no responde, pero el panel dice que esta arrancando: se deja en paz")
-        return 0
+        # Un arranque normal tarda unos tres minutos. Pero el 14-08 el servidor se quedo
+        # colgado a media carga y el panel siguio diciendo "starting" durante TRES HORAS: el
+        # proceso estaba vivo, asi que nadie lo tocaba, y los jugadores no podian entrar.
+        # Por eso "arrancando" tiene techo: pasado el margen, se trata como colgado.
+        desde = estado.get("arrancando_desde") or ahora
+        if ahora - desde < MARGEN_ARRANQUE:
+            print(f"  arrancando desde hace {int(ahora-desde)}s: se deja en paz")
+            ESTADO.write_text(json.dumps({"fallos": fallos, "ultimo_reinicio": ultimo,
+                                          "arrancando_desde": desde}))
+            return 0
+        print(f"  lleva {int(ahora-desde)}s arrancando: se da por colgado")
+        avisar("🚨 **DrakesCraft** lleva demasiado tiempo arrancando sin terminar. "
+               "Se da por colgado y se reinicia.")
+        # Sigue hacia el reinicio de mas abajo.
 
     fallos += 1
     print(f"  no responde (fallo {fallos})")

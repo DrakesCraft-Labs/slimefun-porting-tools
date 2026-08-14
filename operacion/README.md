@@ -12,6 +12,7 @@ star**, que es donde vive la clave del panel; copias en `~/ai-hub/scripts/`.
 | `subir_jar.py` | Sustituye un jar: sube, verifica y sólo entonces cambia |
 | `traza.py` | Saca una traza contigua del log |
 | `busca_log.py` / `cola_log.py` | Buscar o leer el final de un log de decenas de MB |
+| `leer_gz.py` | Leer los logs archivados (`.gz`) de días anteriores |
 
 ## Tres trampas que costaron un reinicio cada una
 
@@ -27,3 +28,21 @@ que ya está en el servidor.
 **Subir antes de apartar.** `subir_jar.py` sube a un nombre temporal y sólo cambia el bueno
 cuando ha verificado el tamaño. Al revés, un fallo de subida deja el plugin sin jar: pasó, y
 cinco plugins se quedaron sin fichero hasta que se restauraron.
+
+## El arranque colgado del 14-08
+
+El reinicio diario dejó el servidor tres horas sin arrancar. En el log no había ningún error
+— por eso costó verlo —: la última línea del hilo del servidor era el banner de EquivalencyTech,
+y después sólo mensajes de Discord retransmitidos, porque DiscordSRV conecta pronto y el proceso
+seguía vivo. Parecía encendido y no lo estaba.
+
+La causa es `EmcDefinitions`, que recorre los 14.886 objetos de Slimefun resolviendo recetas con
+una función **recursiva sin límite de profundidad ni guarda contra ciclos** — su parámetro
+`nestLevel` sólo sirve para indentar el log. Sólo memoriza lo ya terminado, no lo que está a
+medias, así que un grafo de recetas en diamante explota de forma combinatoria. Tarda 57 segundos
+cuando sale bien; cuando no, no termina.
+
+Empezó a fallar justo al añadir diez addons, que agrandaron el grafo.
+
+De ahí el techo de 8 minutos en el vigilante: mientras el panel diga `starting` nadie interviene,
+y ese era exactamente el hueco por el que se colaron tres horas de caída.
