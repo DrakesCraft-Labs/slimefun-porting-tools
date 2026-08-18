@@ -1,6 +1,16 @@
-<p align="center"><img src="docs/banner.svg" alt="Herramientas de portado" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/DrakesCraft-Labs/_cosecha/main/banner.svg" alt="Herramientas de portado" width="100%"></p>
 
 # Herramientas de portado de addons de Slimefun
+
+> ### 🏰 ¡Únete a la Comunidad Oficial de DrakesCraft!
+> 
+> * 🎮 **IP del Servidor**: `play.drakescraft.net` *(Java 1.21.11 & Bedrock)*
+> * 💬 **Discord Oficial**: [discord.gg/drakescraft](https://discord.gg/rR7FbfCt9Y)
+> * 🌐 **Web & Guía**: [drakescraft.net](https://drakescraft.net) — 🛒 **Tienda**: [tienda.drakescraft.net](https://tienda.drakescraft.net)
+> 
+> *¡Juega con este addon y más de 80 expansiones optimizadas en vivo en nuestra network de supervivencia técnica!*
+
+---
 
 Lo que usamos en **DrakesCraft** para traer addons de Slimefun de fuera —muchos de 2021-2022 y
 casi todos del ecosistema chino— a nuestro core: **Paper/Purpur 1.21.11, Java 21**.
