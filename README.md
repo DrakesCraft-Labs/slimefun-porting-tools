@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/DrakesCraft-Labs/_cosecha/main/banner.svg" alt="Herramientas de portado" width="100%"></p>
+<p align="center"><img src="docs/banner.svg" alt="Herramientas de portado" width="100%"></p>
 
 # Herramientas de portado de addons de Slimefun
 
@@ -92,6 +92,42 @@ excluir una librería empaquetada hay que nombrar su ruta **original**, no la re
 **Traducir el código no basta.** Estos plugins generan su `config.yml` y sus `messages.yml` al
 arrancar y **no los sobrescriben después**. Si solo traduces el jar, el jugador sigue viendo
 chino. Hay que traducir también lo desplegado.
+
+## Las otras dos carpetas
+
+El repositorio empezó siendo sólo el pipeline de portado, pero se ha ido llevando el resto de
+herramientas que acaban haciendo falta al mantener un servidor con 158 plugins.
+
+### `operacion/`
+
+Desplegar, reiniciar y leer logs sin romper nada. Corre **en star**, que es donde están las
+credenciales. Tiene su propio README con las tres trampas que costaron un reinicio cada una.
+
+La pieza de la que cuelga todo es `mcfs.py`, el puente SFTP al host de Minecraft: sin él no
+funcionan `busca_log.py`, `cola_log.py`, `leer_gz.py` ni `subir_jar.py`. Vivió una temporada en
+`/tmp`, se perdió en un reinicio y se llevó por delante toda la operativa hasta que se rehízo.
+Por eso está aquí.
+
+### `auditoria/`
+
+Revisar configuraciones y datos antes de que exploten en producción:
+
+| Script | Para qué |
+|---|---|
+| `audit_drakescraft_plugins.py` | Inventario de plugins y sus dependencias |
+| `auditar_arbitraje_tienda.py` | Busca huecos de arbitraje entre precios de compra y venta |
+| `auditar_config_zombi.py` | Claves de config que el jar repone aunque las borres del fichero |
+| `ampliar_chatgames.py` / `validar_chatgames.py` | Preguntas de los juegos del chat |
+
+## Nada de credenciales aquí
+
+Este repositorio es público. Ningún script lleva claves: se leen de ficheros fuera del árbol o
+del entorno. El identificador del servidor en el panel también salió del código a
+`DRAKES_PANEL_SERVER` — no es un secreto por sí solo, pero identifica la instancia y no tiene por
+qué estar publicado.
+
+Si añades una herramienta, la regla es simple: **si algo se puede usar para entrar en algún
+sitio, no va en el código.**
 
 ## Uso
 

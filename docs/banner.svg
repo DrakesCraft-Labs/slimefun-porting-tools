@@ -1,41 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 240" width="920" height="240" role="img" aria-label="_cosecha Banner">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" width="920" height="300">
   <defs>
-    <linearGradient id="bFondo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#070B14"/>
-      <stop offset="100%" stop-color="#0F172A"/>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#020617" />
     </linearGradient>
-    <linearGradient id="acG" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#10B981"/>
-      <stop offset="100%" stop-color="#6EE7B7"/>
+
+    <linearGradient id="acG" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#F59E0B" />
     </linearGradient>
-    <radialGradient id="bHalo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#10B981" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
-    </radialGradient>
+
+    <filter id="glowF">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="920" height="240" rx="16" fill="url(#bFondo)"/>
-  <rect width="920" height="240" rx="16" fill="url(#bHalo)"/>
-  <rect x="2" y="2" width="916" height="236" rx="14" fill="none" stroke="url(#acG)" stroke-width="2" opacity="0.4"/>
-  
-  <g transform="translate(460,70) scale(1.6)">
-<rect x="-24" y="-24" width="48" height="48" rx="8" fill="none" stroke="url(#acG)" stroke-width="4"/><circle cx="0" cy="0" r="10" fill="#10B981"/>
+
+  <style>
+    @keyframes latido {
+      0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 15px #F59E0Bb3); }
+      50%      { opacity: 1;    filter: drop-shadow(0 0 30px #38BDF8); }
+    }
+    @keyframes giro {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .fondo  { fill: url(#bgG); }
+    .titulo { font-family: 'Outfit', 'Segoe UI', sans-serif; font-weight: 900; font-size: 28px;
+               fill: url(#acG); animation: latido 3.5s infinite ease-in-out; }
+    .sub    { font-family: 'Inter', 'Segoe UI', sans-serif; font-weight: 700; font-size: 14px;
+               fill: #94A3B8; letter-spacing: 3px; }
+    .chapa  { fill: #0F172A; stroke-width: 1.5; rx: 6px; }
+    .ctexto { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+  </style>
+
+  <rect class="fondo" width="920" height="300" rx="14" stroke="#F59E0B" stroke-width="1.5" />
+
+  <g transform="translate(460, 95)" filter="url(#glowF)">
+    <!-- El giro va en SMIL y no en CSS a proposito: GitHub sirve el banner dentro de un <img>,
+         y ahi `transform-box: fill-box` no se aplica igual en todos los navegadores, con lo que
+         la figura giraba alrededor de la esquina del SVG en vez de sobre si misma. -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+                        from="0 0 0" to="360 0 0" dur="24s" repeatCount="indefinite"/>
+    <circle cx="0" cy="0" r="34" fill="none" stroke="url(#acG)" stroke-width="4"/>
+    <circle cx="0" cy="0" r="13" fill="#0F172A" stroke="#38BDF8" stroke-width="3"/>
+    <rect x="-4" y="-46" width="8" height="13" rx="2" fill="#F59E0B"/>
+    <rect x="-4" y="33" width="8" height="13" rx="2" fill="#F59E0B"/>
+    <rect x="-46" y="-4" width="13" height="8" rx="2" fill="#F59E0B"/>
+    <rect x="33" y="-4" width="13" height="8" rx="2" fill="#F59E0B"/>
+    <rect x="-36" y="-36" width="10" height="8" rx="2" fill="#38BDF8" transform="rotate(-45)" opacity="0.8"/>
+    <circle cx="0" cy="0" r="5" fill="#38BDF8">
+      <animate attributeName="opacity" values="1;0.35;1" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    </g>
   </g>
-  
-  <text x="460" y="152" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-weight="900" font-size="28" fill="#F8FAFC" letter-spacing="2">
-    _COSECHA
-  </text>
-  <text x="460" y="184" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#6EE7B7" letter-spacing="3" opacity="0.9">
-    SLIMEFUN4 ADDON · _COSECHA
-  </text>
-  
-  <g transform="translate(460, 210)">
-    <rect x="-180" y="-12" width="110" height="20" rx="4" fill="#1E293B" stroke="#10B981" stroke-width="1"/>
-    <text x="-125" y="2" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#E2E8F0">DRAKES LABS</text>
-    
-    <rect x="-55" y="-12" width="110" height="20" rx="4" fill="#1E293B" stroke="#6EE7B7" stroke-width="1"/>
-    <text x="0" y="2" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#E2E8F0">PAPER 1.21.11</text>
-    
-    <rect x="70" y="-12" width="110" height="20" rx="4" fill="#1E293B" stroke="#10B981" stroke-width="1"/>
-    <text x="125" y="2" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#E2E8F0">JAVA 21</text>
+
+  <text x="460" y="185" text-anchor="middle" class="titulo">SLIMEFUN-PORTING-TOOLS</text>
+  <text x="460" y="215" text-anchor="middle" class="sub">PORTADO, OPERACION Y AUDITORIA · HERRAMIENTAS DE DRAKESCRAFT LABS</text>
+
+  <g transform="translate(240, 245)">
+    <rect x="0" y="0" width="145" height="30" class="chapa" stroke="#F59E0B" />
+    <text x="12" y="20" class="ctexto" fill="#F59E0B">DRAKES LABS</text>
+
+    <rect x="165" y="0" width="135" height="30" class="chapa" stroke="#38BDF8" />
+    <text x="177" y="20" class="ctexto" fill="#38BDF8">PAPER 1.21.11</text>
+
+    <rect x="320" y="0" width="120" height="30" class="chapa" stroke="#A3E635" />
+    <text x="332" y="20" class="ctexto" fill="#A3E635">JAVA 21</text>
   </g>
 </svg>

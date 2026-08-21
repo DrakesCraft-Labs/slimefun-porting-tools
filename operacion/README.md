@@ -3,6 +3,11 @@
 Lo que se usa para desplegar y reiniciar DrakesCraft sin romper nada. Todas se ejecutan **en
 star**, que es donde vive la clave del panel; copias en `~/ai-hub/scripts/`.
 
+> **Credenciales.** Ninguna clave vive en este repositorio. `control_drakescraft.py` y
+> `drakes_delivery_daemon.py` leen la API key del panel de un fichero fuera del árbol, y el
+> identificador del servidor sale de `DRAKES_PANEL_SERVER`. `mcfs.py` saca las suyas del `.env`
+> del stack. Si clonas esto en una máquina nueva, esas tres cosas hay que ponerlas a mano.
+
 | Script | Para qué |
 |---|---|
 | `preflight.py` | Antes de reiniciar: nombres duplicados, dependencias que faltan, clase principal ausente |
@@ -13,6 +18,13 @@ star**, que es donde vive la clave del panel; copias en `~/ai-hub/scripts/`.
 | `traza.py` | Saca una traza contigua del log |
 | `busca_log.py` / `cola_log.py` | Buscar o leer el final de un log de decenas de MB |
 | `leer_gz.py` | Leer los logs archivados (`.gz`) de días anteriores |
+| `mcfs.py` | Puente SFTP al host de Minecraft: `ls`, `cat`, `stat`. Del que dependen los demás |
+| `subir_archivo.py` | Sustituye un config con respaldo atómico, igual que `subir_jar.py` con los jars |
+| `control_drakescraft.py` | Consola y energía del servidor vía panel: `status`, `resources`, `cmd`, `restart` |
+| `atender_reinicio.py` | Atiende un reinicio programado y confirma que volvió |
+| `scheduled_drakescraft_restart.py` | Reinicio diario programado |
+| `drakes_delivery_daemon.py` | Entrega de compras de la tienda |
+| `metricas_drakescraft.py` | Métricas del servidor |
 
 ## Tres trampas que costaron un reinicio cada una
 
