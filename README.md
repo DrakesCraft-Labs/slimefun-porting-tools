@@ -110,6 +110,10 @@ Por eso está aquí.
 
 ### `auditoria/`
 
+Incluye validadores de configuración y reparadores reproducibles para datapacks de producción.
+Instala sus dependencias dentro de un entorno virtual con
+`python3 -m pip install -r auditoria/requirements.in`.
+
 Revisar configuraciones y datos antes de que exploten en producción:
 
 | Script | Para qué |
@@ -118,6 +122,9 @@ Revisar configuraciones y datos antes de que exploten en producción:
 | `auditar_arbitraje_tienda.py` | Busca huecos de arbitraje entre precios de compra y venta |
 | `auditar_config_zombi.py` | Claves de config que el jar repone aunque las borres del fichero |
 | `ampliar_chatgames.py` / `validar_chatgames.py` | Preguntas de los juegos del chat |
+| `reparar_estados_jigsaw.py` | Propiedades de bloques inválidas en NBT de datapacks |
+| `reparar_entidades_colgantes.py` | Coordenadas absolutas heredadas en cuadros y marcos |
+| `reparar_pool_jigsaw.py` | Referencias obsoletas a pools de estructuras |
 
 ## Nada de credenciales aquí
 

@@ -32,6 +32,11 @@ def problemas(pregunta, respuesta):
     fallos = []
     limpia = str(respuesta)
 
+    # Las cantidades operativas cambian con el servidor y convierten preguntas correctas hoy
+    # en respuestas falsas mañana. Ya ocurrió al pasar DrakesCraft de 3 a 5 modalidades.
+    if re.search(r"cu[aá]ntas?\s+modalidades", pregunta, re.I):
+        fallos.append("pregunta volatil: no fijar en trivia la cantidad de modalidades")
+
     if limpia != limpia.strip():
         fallos.append("espacios sobrantes: el plugin no hace trim")
     if tiene_acento(limpia):
@@ -44,8 +49,9 @@ def problemas(pregunta, respuesta):
         fallos.append(f"{len(palabras)} palabras: hay que clavarlas todas sin erratas")
 
     # Si la respuesta tiene mas de una palabra o no es obvia, la pregunta deberia decir el formato.
-    sin_formato = not re.search(r"\(.*(palabra|responde|solo|numero|sin tildes|comando).*\)",
-                                pregunta, re.I)
+    sin_formato = not re.search(
+        r"comando|\(.*(palabra|responde|solo|numero|sin tildes).*\)", pregunta, re.I
+    )
     if len(palabras) == MAX_PALABRAS and sin_formato:
         fallos.append("dos palabras y la pregunta no avisa del formato esperado")
 
@@ -68,9 +74,16 @@ def revisar(ruta, datos):
                 malas.append((clave, letra, [f"la letra {letra} no coincide con ninguna opcion"]))
         return malas
 
-    for pregunta, respuesta in preguntas:
-        fallos = problemas(str(pregunta), str(respuesta))
-        if fallos:
+    for entrada in preguntas:
+        if not isinstance(entrada, list) or len(entrada) < 2:
+            malas.append((str(entrada)[:60], "", ["cada pregunta necesita texto y al menos una respuesta"]))
+            continue
+        pregunta, *respuestas = entrada
+        evaluadas = [(respuesta, problemas(str(pregunta), str(respuesta))) for respuesta in respuestas]
+        # Las variantes adicionales son alias permisivos: basta una respuesta breve y fiable.
+        # Solo se rechaza la pregunta cuando ninguna de sus respuestas es razonable.
+        if all(fallos for _, fallos in evaluadas):
+            respuesta, fallos = min(evaluadas, key=lambda evaluada: len(evaluada[1]))
             malas.append((re.sub(r"<[^>]+>", "", str(pregunta))[:60], respuesta, fallos))
     for palabra in (datos.get("words") or []):
         if tiene_acento(palabra) or " " in palabra:
@@ -86,9 +99,16 @@ if __name__ == "__main__":
     import yaml
     total = 0
     for ruta in sys.argv[1:]:
-        with open(ruta, encoding="utf-8") as fichero:
-            datos = yaml.safe_load(fichero)
-        malas = revisar(ruta, datos)
+        try:
+            with open(ruta, encoding="utf-8") as fichero:
+                datos = yaml.safe_load(fichero)
+            if not isinstance(datos, dict):
+                raise ValueError("la raíz YAML debe ser un mapa")
+            malas = revisar(ruta, datos)
+        except (OSError, ValueError, yaml.YAMLError) as error:
+            print(f"{ruta.split('/')[-1]:<22} ERROR: {type(error).__name__}: {error}")
+            total += 1
+            continue
         cuantas = (len(datos.get("questions") or []) + len(datos.get("words") or [])
                    + len(datos.get("variants") or []) + len(datos.get("questions-mc") or []))
         estado = "OK" if not malas else f"{len(malas)} PROBLEMAS"

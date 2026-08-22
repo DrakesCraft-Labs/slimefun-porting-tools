@@ -38,7 +38,6 @@ TRIVIA_NUEVA = [
     ("[DRAKES] Comando para aceptar un teletransporte?", "tpaccept"),
     ("[DRAKES] Comando para ver el ranking de los mas ricos?", "baltop"),
     ("[DRAKES] Como se llama el plugin propio del servidor? (una palabra)", "odysseia"),
-    ("[DRAKES] Cuantas modalidades tiene DrakesCraft? (solo el numero)", "3"),
     ("[DRAKES] Comando para tirar basura sin dejarla en el suelo?", "trash"),
     ("[DRAKES] Comando para elegir tu idioma de traduccion en el chat?", "wwct"),
     # ── Slimefun ──
