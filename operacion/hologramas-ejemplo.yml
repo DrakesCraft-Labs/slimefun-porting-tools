@@ -1,0 +1,35 @@
+# Ejemplo minimo para gestionar_hologramas.py
+#
+#   python3 operacion/gestionar_hologramas.py operacion/hologramas-ejemplo.yml --simular
+#
+# LEE LA CABECERA DEL SCRIPT ANTES DE COLOCAR NADA. Resumen de lo que hay que
+# saber de antemano, porque la herramienta no puede adivinarlo:
+#
+#   * El mundo exacto. El lobby rara vez es el mundo principal.
+#   * La altura del piso, mirada con /getpos de pie en el sitio. `y` es la BASE
+#     del texto (down-origin), no su techo: piso 24 -> y 27 deja el texto
+#     empezando sobre la cabeza de quien pasa.
+#   * Las dos esquinas del area libre. Un panel de 15 lineas mide ~4,5 bloques
+#     de alto y varios de ancho: con menos de 8 o 9 bloques de separacion entre
+#     paneles se pisan y no hay forma de leerlos.
+#   * Por donde entra y camina la gente. Un panel impecable en una esquina a la
+#     que nadie llega no lo lee nadie.
+#   * El alcance: 24 es el de fabrica y se queda corto para un cartel grande.
+#     40-48 va bien para paneles de bienvenida.
+
+mundo: SpawnWarps
+rango_por_defecto: 40
+
+hologramas:
+  - nombre: ejemplo_bienvenida
+    x: 197
+    y: 27           # el piso de esta zona esta en 24
+    z: 292
+    rango: 48
+    titulo: "&#FFD700&l✦ TITULO DEL PANEL ✦"
+    lineas:
+      - "&7Una linea normal, con codigos & de toda la vida"
+      - "---"        # separador tachado gris
+      - "&fTexto blanco y &eamarillo &fen la misma linea"
+      - ""           # hueco: se convierte en un punto tenue
+      - "&c⚠ &7Los avisos importantes, en rojo y arriba"

@@ -24,7 +24,7 @@ if not _SERVIDOR:
 BASE_URL = f"{_PANEL}/api/client/servers/{_SERVIDOR}"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
-# Buscar la API key en el archivo privado en C:\Users\jack\ai-hub\.pterodactyl_key
+# Buscar la API key en el archivo privado .pterodactyl_key, junto al script
 dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 key_path = os.path.join(dir_path, ".pterodactyl_key")
 
