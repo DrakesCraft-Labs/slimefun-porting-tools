@@ -1,0 +1,106 @@
+name: reaction
+display-name: <red>Reflejos de Hermes</red>
+timeout: 30
+reward-commands:
+- minecraft:xp add {player} {rand:80-220} points
+- eco give {player} {rand:150-700}
+messages:
+  start: '
+
+    <dark_gray>━━━━━━━━ <red><bold>REFLEJOS DE HERMES</bold></red> <dark_gray>━━━━━━━━
+
+    <gray>¡El jugador mas rapido en reaccionar o hacer click se lleva el premio!</gray>
+
+
+    {question}
+
+    '
+  win: '
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> demostro los mejores reflejos del Olimpo.</green>
+
+    '
+  timeout: '
+
+    <red><bold>✗</bold> Hermes fue mas rapido. Nadie reacciono a tiempo.</red>
+
+    '
+variants:
+- name: Código del Olimpo
+  challenge: '<gold><bold>Escribe exactamente: <yellow>HERMES</yellow></bold></gold>'
+  answer: HERMES
+- name: Comando Tienda
+  challenge: '<gold><bold>Comando de la tienda, SIN la barra: <yellow>shop</yellow></bold></gold>'
+  answer: shop
+- name: Comando Banco
+  challenge: '<gold><bold>Comando del banco, SIN la barra: <yellow>bank</yellow></bold></gold>'
+  answer: bank
+- name: Comando Prote
+  challenge: '<gold><bold>Comando para añadir en prote, SIN la barra: <yellow>ps add</yellow></bold></gold>'
+  answer: ps add
+- name: Velocidad TPS
+  challenge: '<gold><bold>Escribe: <yellow>20 TPS SOLIDOS</yellow></bold></gold>'
+  answer: 20 TPS SOLIDOS
+- name: Slimefun
+  challenge: '<gold><bold>Escribe: <yellow>SLIMEFUN 1.21</yellow></bold></gold>'
+  answer: SLIMEFUN 1.21
+- name: Rayo Olimpo
+  challenge: '<gold><bold>Escribe: <yellow>RAYO DE ZEUS</yellow></bold></gold>'
+  answer: RAYO DE ZEUS
+- name: Click de Hermes
+  challenge: <button hover='Hermes prueba tu velocidad' win><gold><bold>[ Haz click AQUÍ para ganar ]</bold></gold></button>
+  answer: CLICK
+- name: Trampa elemental
+  challenge: '<yellow>Haz click ÚNICAMENTE en el rayo dorado.</yellow>
+
+
+    <button>[<red><bold>FUEGO</bold></red>]</button>  <button win>[<gold><bold>⚡ RAYO</bold></gold>]</button>  <button>[<aqua><bold>AGUA</bold></aqua>]</button>'
+  answer: CLICK
+- name: Desafío de Reacción
+  challenge: <gold><bold>Escribe la primera palabra que pienses en el chat ahora!</bold></gold>
+  answer: ''
+- name: Grito de Zeus
+  challenge: '<gold><bold>Escribe exactamente: <yellow>RELAMPAGO</yellow></bold></gold>'
+  answer: RELAMPAGO
+- name: Llamado de Poseidon
+  challenge: '<gold><bold>Escribe exactamente: <yellow>TRIDENTE</yellow></bold></gold>'
+  answer: TRIDENTE
+- name: Forja de Hefesto
+  challenge: '<gold><bold>Escribe exactamente: <yellow>YUNQUE</yellow></bold></gold>'
+  answer: YUNQUE
+- name: Flecha de Artemisa
+  challenge: '<gold><bold>Escribe exactamente: <yellow>ARCO</yellow></bold></gold>'
+  answer: ARCO
+- name: Comando de bovedas
+  challenge: '<gold><bold>Comando de tus bovedas, SIN la barra: <yellow>pv</yellow></bold></gold>'
+  answer: pv
+- name: Comando de subasta
+  challenge: '<gold><bold>Comando del mercado, SIN la barra: <yellow>ah</yellow></bold></gold>'
+  answer: ah
+- name: Comando de guia SF
+  challenge: '<gold><bold>Comando de la guia, SIN la barra: <yellow>sf guide</yellow></bold></gold>'
+  answer: sf guide
+- name: Comando de warps
+  challenge: '<gold><bold>Comando de warps, SIN la barra: <yellow>pwarp</yellow></bold></gold>'
+  answer: pwarp
+- name: Moneda del reino
+  challenge: '<gold><bold>Escribe la moneda del servidor: <yellow>DRAGMAS</yellow></bold></gold>'
+  answer: DRAGMAS
+- name: Grito de guerra
+  challenge: '<gold><bold>Escribe exactamente: <yellow>DRAKESCRAFT</yellow></bold></gold>'
+  answer: DRAKESCRAFT
+- name: Numero de la suerte
+  challenge: '<gold><bold>Escribe exactamente: <yellow>777</yellow></bold></gold>'
+  answer: '777'
+- name: Stack completo
+  challenge: <gold><bold>Cuantos items tiene un stack? Escribe el numero</bold></gold>
+  answer: '64'
+- name: Reflejo veloz
+  challenge: '<gold><bold>Escribe exactamente: <yellow>RAPIDO</yellow></bold></gold>'
+  answer: RAPIDO
+- name: Eco del Hades
+  challenge: '<gold><bold>Escribe exactamente: <yellow>INFRAMUNDO</yellow></bold></gold>'
+  answer: INFRAMUNDO
+- name: Runa antigua
+  challenge: '<gold><bold>Escribe exactamente: <yellow>ODYSSEIA</yellow></bold></gold>'
+  answer: ODYSSEIA

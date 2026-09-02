@@ -3,14 +3,19 @@
 
 ChatGames v1.4.5 admite **una sola respuesta** por pregunta y la compara asi:
 
-    entrada.toLowerCase()  ->  contains(opciones)
+    entrada.equalsIgnoreCase(respuesta)
 
-Sin quitar acentos y sin recortar espacios. Eso convierte en imposibles respuestas que parecen
-razonables:
+Sin quitar acentos y sin recortar espacios: la linea del chat tiene que coincidir entera. Eso
+convierte en imposibles respuestas que parecen razonables:
 
   - "Via Lactea"            el jugador escribe "Vía Láctea" y falla
   - "Pickaxe of Distortion" hay que clavar tres palabras en ingles, sin erratas
   - "Cordillera de los Andes"  lo mismo, en 23 caracteres
+
+Y hay un caso peor, que ni siquiera depende de lo que escriba el jugador: PaperChatListener solo
+registra AsyncChatEvent. Un mensaje que empieza por "/" lo enruta Paper como comando y nunca
+dispara ese evento, asi que una respuesta con barra no llega jamas al juego aunque este bien
+escrita. Ademas el jugador acaba ejecutando el comando: si es /sellinv, vende su inventario.
 
 Este validador se ejecuta sobre los cinco archivos antes de subirlos. Verificado leyendo el
 bytecode de GameConfig y GameManager, no suponiendolo.
@@ -27,6 +32,15 @@ def tiene_acento(texto):
     return any(unicodedata.combining(c) for c in unicodedata.normalize("NFD", texto))
 
 
+def es_comando(texto):
+    """La respuesta se enviaria como comando y el juego nunca la recibiria."""
+    return texto.lstrip().startswith("/")
+
+
+BARRA = ("empieza por '/': el chat lo enruta como comando, "
+         "AsyncChatEvent no dispara y el juego nunca ve la respuesta")
+
+
 def problemas(pregunta, respuesta):
     """Lista de motivos por los que esta respuesta seria injusta. Vacia = correcta."""
     fallos = []
@@ -37,6 +51,8 @@ def problemas(pregunta, respuesta):
     if re.search(r"cu[aá]ntas?\s+modalidades", pregunta, re.I):
         fallos.append("pregunta volatil: no fijar en trivia la cantidad de modalidades")
 
+    if es_comando(limpia):
+        fallos.append(BARRA)
     if limpia != limpia.strip():
         fallos.append("espacios sobrantes: el plugin no hace trim")
     if tiene_acento(limpia):
@@ -90,8 +106,15 @@ def revisar(ruta, datos):
             malas.append((f"[unscramble] {palabra}", palabra, ["tilde o espacio en la palabra"]))
     for variante in (datos.get("variants") or []):
         respuesta = str(variante.get("answer", ""))
+        # Una variante de reaction se acierta con la linea entera, asi que no le aplican los
+        # limites de largo ni de palabras; lo que si la rompe es una tilde o una barra inicial.
+        fallos = []
         if tiene_acento(respuesta):
-            malas.append((variante.get("name", "?"), respuesta, ["tilde en la respuesta"]))
+            fallos.append("tilde en la respuesta")
+        if es_comando(respuesta):
+            fallos.append(BARRA)
+        if fallos:
+            malas.append((variante.get("name", "?"), respuesta, fallos))
     return malas
 
 
