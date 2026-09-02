@@ -293,12 +293,16 @@ def main():
     geo = abrir_geo()
     sftp, transporte = conectar()
     try:
-        todos = [n for n in sftp.listdir("/logs") if re.fullmatch(r"2026-\d{2}-\d{2}-\d+\.log(\.gz)?", n)]
+        archivos_logs = sftp.listdir("/logs")
+        todos = [n for n in archivos_logs if re.fullmatch(r"2026-\d{2}-\d{2}-\d+\.log(\.gz)?", n)]
         por_fecha = defaultdict(list)
         for n in todos:
             por_fecha[n[:10]].append(n)
 
         hoy = datetime.now().strftime("%Y-%m-%d")
+        if "latest.log" in archivos_logs:
+            por_fecha[hoy].append("latest.log")
+
         for fecha_txt in sorted(por_fecha):
             # Los dias cerrados solo se calculan una vez; el de hoy siempre se rehace.
             if fecha_txt in historial and fecha_txt != hoy:
